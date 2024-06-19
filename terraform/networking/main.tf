@@ -62,3 +62,16 @@ resource "aws_subnet" "dev_bookyland_private_subnet" {
     Name = "dev-bookyland-private-subnet-${count.index + 1}"
   }
 }
+
+####################
+# INTERNET GATEWAY #
+####################
+// Provide internet acces to vpc sbnet's resources
+// anyone outside can access to vpc subnet resources throgh IG
+
+resource "aws_internet_gateway" "dev_bookyland_public_internet_gateway" {
+  vpc_id =  aws_vpc.dev_bookyland_vpc_us_central_1.id
+  tags = {
+    Name = "dev-bookyland-IG"
+  }
+}
