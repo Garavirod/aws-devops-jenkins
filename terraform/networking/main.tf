@@ -66,6 +66,7 @@ resource "aws_subnet" "dev_bookyland_private_subnet" {
 ####################
 # INTERNET GATEWAY #
 ####################
+
 // Provide internet acces to vpc sbnet's resources
 // anyone outside can access to vpc subnet resources throgh IG
 
@@ -73,5 +74,34 @@ resource "aws_internet_gateway" "dev_bookyland_public_internet_gateway" {
   vpc_id =  aws_vpc.dev_bookyland_vpc_us_central_1.id
   tags = {
     Name = "dev-bookyland-IG"
+  }
+}
+
+################
+# ROUTE TABLES #
+################
+
+// Routing table is responsible for rounting all the requests
+// Its the responsible for forward the IG request. So IG needs 
+// a routing table.
+
+
+// Public Routing table
+resource "aws_route_table" "dev_bookyland_public_route_table" {
+  vpc_id = aws_vpc.dev_bookyland_vpc_us_central_1.id
+  route {
+    cidr_block = "0.0.0.0/0" # anyone can access this resource form outside throgh internet
+    gateway_id = aws_internet_gateway.dev_bookyland_public_internet_gateway.id
+  }
+  tags = {
+    Name = "dev-bookyland-public-rt"
+  }
+}
+
+// Private routing table
+resource "aws_route_table" "dev_bookyland_private_route_table" {
+  vpc_id = aws_vpc.dev_bookyland_vpc_us_central_1.id
+  tags = {
+    Name = "dev-bookyland-private-rt"
   }
 }
