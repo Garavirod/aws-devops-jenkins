@@ -1,6 +1,6 @@
 /*
 
-sECURITY GROUP: 
+SECURITY GROUP: 
 
  virtual firewall for your EC2 instances, controlling both inbound 
  and outbound traffic at the instance level. crucial role in securing 
