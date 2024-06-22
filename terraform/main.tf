@@ -24,3 +24,12 @@ module "jenkins" {
   enable_public_ip_address  = true # because resides into public subnet
   user_data_install_jenkins = templatefile("./jenkins/jenkins-runner-script.sh", {}) # User data in order to configure EC2 (Blank as default)
 }
+
+module "tg-load-balancer" {
+  source = "./target-load-balancer"
+  lb_target_group_name = "jenkins-load-balancer-tg"
+  lb_target_group_port = 8080
+  lb_target_group_protocol = "HTTP"
+  vpc_id = module.networking.dev_bookyland_vpc_id
+  ec2_instance_id = module.jenkins.jenkins_ec2_instance_ip
+}
